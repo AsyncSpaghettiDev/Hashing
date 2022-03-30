@@ -10,32 +10,53 @@ export default class HashTable {
     }
 
     insert(hash_toConvert) {
-        const hashIndex = this.#generateHash(hash_toConvert);
-        console.log(this.#hashes[hashIndex - 1]);
-        console.log(this.#hashes[hashIndex - 1].value == '');
-        this.#hashes[hashIndex - 1] = new HashKey(hashIndex, hash_toConvert);
+        let hashIndex = this.#generateHash(hash_toConvert);
+        /* console.log(this.#hashes[hashIndex - 1]); */
+        if (!this.#checkIndexFree(hashIndex - 1) ) {
+            let lastCollision = this.#findCollision(this.#hashes[hashIndex - 1]);
+            /* console.log(lastCollision); */
+            let newIndex = lastCollision.index + hashIndex;
+            console.log(newIndex + ' | ' +  hashIndex);
+            const finalIndex = this.#checkIndexFree(newIndex) ? newIndex : this.#findNearIndex(newIndex, hashIndex);
+            console.log('Final Index: ' + finalIndex);
+            const new_HashKey = new HashKey(finalIndex, hash_toConvert);
+            this.#hashes[finalIndex - 1] = new_HashKey;
+            lastCollision.collision = new_HashKey;
+            console.log(lastCollision);
+        }
+        else
+            this.#hashes[hashIndex - 1] = new HashKey(hashIndex, hash_toConvert);
+        /* console.log(this.#hashes[hashIndex - 1].collision); */
     }
 
     #generateHash(hash_toConvert) {
-        const firstIndex = this.#alphabet.indexOf(hash_toConvert[0].toLowerCase());
-        const seconIndex = Math.floor(Math.sqrt(this.#alphabet.indexOf(hash_toConvert[1].toLowerCase())));
-        const finalIndex = firstIndex * seconIndex;
-        console.log(firstIndex + ' | ' + seconIndex);
+        let finalIndex = 0;
+        for (const elem of hash_toConvert)
+            finalIndex += this.#alphabet.indexOf(elem.toLowerCase());
         return finalIndex;
     }
 
-    #collision(index, hash_toConvert){
-        let newIndex = index;
-        for(let i = 1; i <= 5; ++i ){
-            if(this.#hashes[newIndex + i].value == ''){
-                this.#hashes[newIndex].collision = newIndex + i;
-                break;
-            }
-        }
+    #findCollision(currentHashKey) {
+        if (currentHashKey.collision != null)
+            return this.#findCollision(currentHashKey.collision);
+        else
+            return currentHashKey;
+    }
+
+    #findNearIndex(newIndex, initialIndex){
+        const alternateIndex = initialIndex + newIndex;
+        if(this.#checkIndexFree(alternateIndex))
+            return alternateIndex;
+        return this.#findNearIndex(alternateIndex, initialIndex);
+    }
+
+    #checkIndexFree(search_index) {
+        return this.#hashes[search_index].value == null;
     }
 
     print(hash_output) {
         hash_output.innerHTML = ' ';
+        console.log(this.#hashes);
         this.#hashes.forEach(hash => hash.toString(hash_output))
     }
 }

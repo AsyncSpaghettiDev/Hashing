@@ -7,7 +7,7 @@ export default class HashKey {
      * @param {number} index
      * @param {number} collision
      */
-    constructor(index, value = "", collision = 0) {
+    constructor(index, value = null, collision = null) {
         this.#index = index;
         this.#value = value;
         this.#collision = collision;
@@ -28,10 +28,17 @@ export default class HashKey {
         return this.#value;
     }
 
+    get index() {
+        return this.#index;
+    }
+
     toString(hash_output) {
         // Main container for hash data
         const container = document.createElement('span');
-        container.className = "hash__key";
+        if  (this.#value != null)
+            container.className = 'hash__key hash__key--active';
+        else
+            container.className = "hash__key";
         container.setAttribute('data-index', this.#index);
         if (this.#collision != 0)
             container.setAttribute('data-collision', this.#collision);
