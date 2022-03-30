@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Catamaran&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+}
+
+body {
+    font-family: 'Catamaran', sans-serif;
+    background-image: url(https://static.vecteezy.com/system/resources/previews/000/556/708/large_2x/vector-modern-abstract-striped-squares-pattern-repeat-on-white-color-background-and-texture.jpg);
+    background-size: contain;
+    margin: 0;
+}
+
+.input__container {
+    display: grid;
+    place-items: center;
+}
+
+.input {
+    box-shadow: 0 0 0.5em #888;
+    border: none;
+    border-radius: 0.5em;
+}
+
+.input-string {
+    margin-block: 0.5em;
+    padding: 0.25em;
+}
+
+.input-submit {
+    margin-block-start: 0.25em;
+    padding: 0.5em 1em;
+}
+
+.hash__table{    
+    max-width: 1161.52px;
+    width: 100vw;
+    overflow: hidden;
+    margin: auto;
+    margin-top: 1em;
+}
+
+.headers_container, .hash__keys {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    margin-inline: auto;
+    column-gap: 0.5em;
+}
+
+.headers_container{
+    height: 1.688em;
+    overflow: hidden;
+}
+
+.hash__key {
+    flex: 0 0 255px;
+    display: grid;
+    grid-template-columns: 4ch 20ch 6ch;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hash__key::before {
+    content: attr(data-index);
+    padding: 0.75em 0.25em;
+}
+/* 
+.hash__key:last-child(){
+    flex-grow: 1;
+    justify-content: flex-start;
+} */
+
+.hash__key-value {
+    padding-block: 0.35em;
+    padding-left: 0.5em;
+}
+
+.hash__key::after {
+    content: attr(data-collision);
+    padding: 0.75em 0.25em;
+}
+
+.headers {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 4ch 20ch 6ch;
+}
+
+.header {
+    display: inline;
+    margin: 0;
+}
