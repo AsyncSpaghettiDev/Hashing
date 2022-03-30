@@ -40,8 +40,8 @@ export default class HashKey {
         else
             container.className = "hash__key";
         container.setAttribute('data-index', this.#index);
-        if (this.#collision != 0)
-            container.setAttribute('data-collision', this.#collision);
+        if (this.#collision != null)
+            container.setAttribute('data-collision', this.#collision.index);
         // Value of hash key
         const hash_value = document.createElement('input');
         hash_value.type = 'text';

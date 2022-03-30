@@ -57,6 +57,6 @@ export default class HashTable {
     print(hash_output) {
         hash_output.innerHTML = ' ';
         console.log(this.#hashes);
-        this.#hashes.forEach(hash => hash.toString(hash_output))
+        this.#hashes.forEach(hashElement => hashElement.toString(hash_output));
     }
 }
