@@ -12,17 +12,22 @@ export default class HashTable {
     insert(hash_toConvert) {
         let hashIndex = this.#generateHash(hash_toConvert);
         /* console.log(this.#hashes[hashIndex - 1]); */
-        if (!this.#checkIndexFree(hashIndex - 1) ) {
-            let lastCollision = this.#findCollision(this.#hashes[hashIndex - 1], hash_toConvert);
-            /* console.log(lastCollision); */
-            let newIndex = lastCollision.index + hashIndex;
-            console.log(newIndex + ' | ' +  hashIndex);
-            const finalIndex = this.#checkIndexFree(newIndex) ? newIndex : this.#findNearIndex(newIndex, hashIndex);
-            console.log('Final Index: ' + finalIndex);
-            const new_HashKey = new HashKey(finalIndex, hash_toConvert);
-            this.#hashes[finalIndex - 1] = new_HashKey;
-            lastCollision.collision = new_HashKey;
-            console.log(lastCollision);
+        if (!this.#checkIndexFree(hashIndex - 1)) {
+            try {
+                let lastCollision = this.#findCollision(this.#hashes[hashIndex - 1], hash_toConvert);
+                /* console.log(lastCollision); */
+                let newIndex = lastCollision.index + hashIndex;
+                console.log(newIndex + ' | ' + hashIndex);
+                const finalIndex = this.#checkIndexFree(newIndex - 1) ? newIndex : this.#findNearIndex(newIndex, hashIndex);
+                console.log('Final Index: ' + finalIndex);
+                const new_HashKey = new HashKey(finalIndex, hash_toConvert);
+                this.#hashes[finalIndex - 1] = new_HashKey;
+                lastCollision.collision = new_HashKey;
+                console.log(lastCollision);
+            }
+            catch (err) {
+                alert(err.toString());
+            }
         }
         else
             this.#hashes[hashIndex - 1] = new HashKey(hashIndex, hash_toConvert);
@@ -37,17 +42,17 @@ export default class HashTable {
     }
 
     #findCollision(currentHashKey, hash_toConvert) {
-        if(hash_toConvert.toLowerCase() == currentHashKey.value.toLowerCase())
-            throw ValueRepeated(currentHashKey.index);
+        if (hash_toConvert.toLowerCase() == currentHashKey.value.toLowerCase())
+            throw new ValueRepeated(currentHashKey.index);
         if (currentHashKey.collision != null)
             return this.#findCollision(currentHashKey.collision, hash_toConvert);
         else
             return currentHashKey;
     }
 
-    #findNearIndex(newIndex, initialIndex){
+    #findNearIndex(newIndex, initialIndex) {
         const alternateIndex = initialIndex + newIndex;
-        if(this.#checkIndexFree(alternateIndex))
+        if (this.#checkIndexFree(alternateIndex))
             return alternateIndex;
         return this.#findNearIndex(alternateIndex, initialIndex);
     }
@@ -64,8 +69,8 @@ export default class HashTable {
 }
 
 class ValueRepeated {
-    constructor(){
-        this.position = this.position;
+    constructor(position) {
+        this.position = position;
     }
     toString() {
         return `La cadena ya habia sido ingresada y se encuentra en la posición ${this.position}`;
