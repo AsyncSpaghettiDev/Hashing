@@ -13,7 +13,7 @@ export default class HashTable {
         let hashIndex = this.#generateHash(hash_toConvert);
         /* console.log(this.#hashes[hashIndex - 1]); */
         if (!this.#checkIndexFree(hashIndex - 1) ) {
-            let lastCollision = this.#findCollision(this.#hashes[hashIndex - 1]);
+            let lastCollision = this.#findCollision(this.#hashes[hashIndex - 1], hash_toConvert);
             /* console.log(lastCollision); */
             let newIndex = lastCollision.index + hashIndex;
             console.log(newIndex + ' | ' +  hashIndex);
@@ -36,9 +36,11 @@ export default class HashTable {
         return finalIndex;
     }
 
-    #findCollision(currentHashKey) {
+    #findCollision(currentHashKey, hash_toConvert) {
+        if(hash_toConvert.toLowerCase() == currentHashKey.value.toLowerCase())
+            throw ValueRepeated(currentHashKey.index);
         if (currentHashKey.collision != null)
-            return this.#findCollision(currentHashKey.collision);
+            return this.#findCollision(currentHashKey.collision, hash_toConvert);
         else
             return currentHashKey;
     }
@@ -59,4 +61,13 @@ export default class HashTable {
         console.log(this.#hashes);
         this.#hashes.forEach(hashElement => hashElement.toString(hash_output));
     }
+}
+
+class ValueRepeated {
+    constructor(){
+        this.position = this.position;
+    }
+    toString() {
+        return `La cadena ya habia sido ingresada y se encuentra en la posición ${this.position}`;
+    };
 }
